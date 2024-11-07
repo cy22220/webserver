@@ -104,13 +104,14 @@ int	main()
 			if(fgets(buff, 1024, istream) == 0)
 				break ;
 			p = strchr(buff, '/');
-			if (count == 0 && p != NULL)
+			if (count == 0 && p != NULL && *(p + 1) != ' ')
 				filename = get_filename(p);	
 			printf("%s", buff);
 			if (strcmp(buff, "\r\n") == 0)
 				break ;
 			count++;
 		}
+		printf("test");
 		if (filename == NULL)
 		{
 
