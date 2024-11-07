@@ -44,7 +44,7 @@ int	main()
 	char	buff[1024];
 	FILE 	*istream;
 	int	count;
-	char *filename;
+	//char *filename;
 
 	count = 0;
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -97,7 +97,7 @@ int	main()
 			return(1);
 		}
 		count = 0;
-		filename = NULL;
+		char *filename = NULL;
 		while(1)
 		{
 			char *p;
@@ -111,7 +111,6 @@ int	main()
 				break ;
 			count++;
 		}
-		printf("test");
 		if (filename == NULL)
 		{
 
@@ -137,6 +136,7 @@ int	main()
 					break ;
 				if(strcmp(buff, "\0") == 0 )
 				{
+					write(2, "Check\n", 6);
 					fprintf(istream, "\r\n");
 					break;
 				}
@@ -146,6 +146,7 @@ int	main()
 				fprintf(istream, "%s\r\n", buff);
 
 			}
+			free(filename);
 			fclose(istream2);
 		}
 		//printf("test\n");
