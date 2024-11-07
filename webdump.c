@@ -61,12 +61,12 @@ int	main()
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	serv_addr.sin_port = htons(80);
-	//check_fd = 1;
-	//if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &check_fd, sizeof(int)) < 0)
-	//{
-	//	perror ("Error setsockopt: ");
-	//	return (1);
-	//}
+	check_fd = 1;
+	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &check_fd, sizeof(int)) < 0)
+	{
+		perror ("Error setsockopt: ");
+		return (1);
+	}
 	if (bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(struct sockaddr_in)) < 0)
 	{
 		perror("Error bind: ");
@@ -134,9 +134,8 @@ int	main()
 				char *check;
 				if(fgets(buff, 1024, istream2) == 0)
 					break ;
-				if(strcmp(buff, "\0") == 0 )
+				if(buff[0] == '\0')
 				{
-					write(2, "Check\n", 6);
 					fprintf(istream, "\r\n");
 					break;
 				}
@@ -147,7 +146,11 @@ int	main()
 
 			}
 			free(filename);
-			fclose(istream2);
+			if (fclose(istream2) < 0)
+			{
+				perror("Error fclose2: ");
+				return (1);
+			}
 		}
 		//printf("test\n");
 		if(fclose(istream) != 0)
@@ -155,12 +158,12 @@ int	main()
 			perror("Error fclose: ");
 			return (1);
 		}
+		//if (close(new_sockfd) < 0)
+		//{
+		//	perror ("Error close_new_sock: ");
+		//	return (1);
+		//}
 	}
-	//if (close(new_sockfd) < 0)
-	//{
-	//	perror ("Error close_new_sock: ");
-	//	return (1);
-	//}
 	if (close(sockfd) < 0)
 	{
 		perror ("Error close: ");
