@@ -111,7 +111,7 @@ int	main()
 				break ;
 			count++;
 		}
-		if (filename != NULL)
+		if (filename == NULL)
 		{
 
 			fprintf(istream, "HTTP/1.1 200 OK \r\n");
@@ -131,20 +131,21 @@ int	main()
 			}
 			while (1)
 			{
-				char *check = NULL;
-				if(fgets(buff, 1024, istream) == 0)
+				char *check;
+				if(fgets(buff, 1024, istream2) == 0)
 					break ;
 				if(strcmp(buff, "\0") == 0 )
 				{
-					fprintf(istream2, "\r\n");
+					fprintf(istream, "\r\n");
 					break;
 				}
 				check = strchr(buff, '\n');
 				if (check  != NULL)
 					*check =  '\0';
-				fprintf(istream2, "%s\r\n", buff);
+				fprintf(istream, "%s\r\n", buff);
 
 			}
+			fclose(istream2);
 		}
 		//printf("test\n");
 		if(fclose(istream) != 0)
